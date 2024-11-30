@@ -7,13 +7,13 @@ pipeline {
     }
 
     environment {
-        SCANNER_HOME = tool name: 'sonar'
+        SCANNER_HOME = tool name: 'sonar_scanner'
     }
 
     stages {
         stage('git pull') {
             steps {
-                git branch: 'main', url: 'https://github.com/yormengh/fullstack-bank-app-main.git'
+                git branch: 'main', url: 'https://github.com/HenryKum23/Bank_App.git'
             }
         }
 
@@ -65,17 +65,17 @@ pipeline {
 
         stage('run command to tag local images') {
             steps {
-                sh 'docker tag app_backend yormengh/fullstackbank_backend:latest'
-                sh 'docker tag app_frontend yormengh/fullstackbank_frontend:latest'
-                sh 'docker tag postgres:15.1 yormengh/full-stack-bank:database'
+                sh 'docker tag app_backend henrykum23/fullstackbank_backend:latest'
+                sh 'docker tag app_frontend henrykum23/fullstackbank_frontend:latest'
+                sh 'docker tag postgres:15.1 henrykum23/full-stack-bank:database'
             }
         }
 
         stage("TRIVY SCAN"){
             steps{
-                sh "trivy image yormengh/fullstackbank_backend:latest > trivyimage.txt"
-                sh "trivy image yormengh/fullstackbank_frontend:latest > trivyimage.txt"
-                sh "trivy image yormengh/full-stack-bank:database > trivyimage.txt" 
+                sh "trivy image henrykum23/fullstackbank_backend:latest > trivyimage.txt"
+                sh "trivy image henrykum23/fullstackbank_frontend:latest > trivyimage.txt"
+                sh "trivy image henrykum23/full-stack-bank:database > trivyimage.txt" 
             }
         }
 
@@ -84,9 +84,9 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'fullstack-bank-app-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                        sh 'docker push yormengh/fullstackbank_backend:latest'
-                        sh 'docker push yormengh/fullstackbank_frontend:latest'
-                        sh 'docker push yormengh/full-stack-bank:database'
+                        sh 'docker push henrykum23/fullstackbank_backend:latest'
+                        sh 'docker push henrykum23/fullstackbank_frontend:latest'
+                        sh 'docker push henrykum23/full-stack-bank:database'
                     }
                 }   
             }
