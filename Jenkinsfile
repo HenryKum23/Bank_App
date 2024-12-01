@@ -32,8 +32,8 @@ pipeline {
 
         stage('sonarqube analysis') {
             steps {
-                withSonarQubeEnv('sonar') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=full-stack-bank \
+                withSonarQubeEnv('sonar_server') {
+                    sh ''' $SCANNER_HOME/bin/sonar_scanner -Dsonar.projectName=full-stack-bank \
                     -Dsonar.projectKey=full-stack-bank '''
                 }
             }
